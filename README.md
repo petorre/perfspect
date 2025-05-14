@@ -1,6 +1,6 @@
 # perf
 
-Docker version of https://github.com/intel/PerfSpect?tab=readme-ov-file#getting-perfspect . TODO with added Prometheus scrapping and Grafana dashboard.
+Docker version of https://github.com/intel/PerfSpect . TODO with added Prometheus scrapping and Grafana dashboard.
 
 ## (Optional) Prepare
 
