@@ -30,6 +30,20 @@ Run it with:
 ./start.sh
 ```
 
+which will in console also present Perfspect metrics (as needed change number of rows in terminal).
+
+See Perfspect report with
+
+```
+curl http://localhost/perfspect/report.txt
+```
+
+or
+
+```
+curl http://localhost/perfspect/report.json
+```
+
 TODO:
 
 Get Prometheus scrapping and graph with:
