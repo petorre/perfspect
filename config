@@ -5,4 +5,4 @@
 IMAGEREPOUSER="ptorre"
 
 # container image name
-PERF_IMAGENAME="perf"
+PERFSPECT_IMAGENAME="perfspect"

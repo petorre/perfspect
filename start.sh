@@ -12,5 +12,5 @@
 # without exposing counters on :80
 # docker run -e PN="${PN}" --name=processwatch --rm -it --privileged ptorre/processwatch:20250405
 
-#docker run -e PN="${PN}" -it --rm --name=perf --network=host --privileged ptorre/perf
-docker run -it --rm --name=perf --network=host --privileged ptorre/perf
+#docker run -e PN="${PN}" -it --rm --name=perf --network=host --privileged ptorre/perfspect
+docker run -it --rm --name=perf --network=host --privileged ptorre/perfspect

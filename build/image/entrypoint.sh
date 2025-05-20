@@ -34,7 +34,7 @@ touch /tmp/ready
 
 while [[ true ]]; do
     perfspect metrics --noupdate --noroot --duration 10 --output results 1>> /dev/null 2>> /dev/null
-    sed "s/ /_/g" < results/*_metrics_summary.csv | awk -vFS="," ' NR>=2 { printf("%s: %s\n",$1,$2); } ' > "${webdir}/metrics"
+    sed "s/ /_/g" < results/*_metrics_summary.csv | awk -vFS="," ' NR>=2 { printf("%s %s\n",$1,$2); } ' > "${webdir}/metrics"
     clear
     echo -n "# "
     date

@@ -7,7 +7,7 @@ set -e
 
 source config
 
-is=$( docker image ls | awk -vLI="${LLM_IMAGENAME}" -vJI="${JMETER_IMAGENAME}" -vRULI="${IMAGEREPOUSER}/${LLM_IMAGENAME}" -vRUJI="${IMAGEREPOUSER}/${JMETER_IMAGENAME}" ' $1==LI || $1==JI || $1==RULI || $1==RUJI { print $3 } ' | sort -u )
+is=$( docker image ls | awk -vPI="${PERFSPECT_IMAGENAME}" -vRUPI="${IMAGEREPOUSER}/${PERFSPECT_IMAGENAME}" ' $1==PI || $1==RUPI { print $3 } ' | sort -u )
 for i in "${is}"; do
     docker rmi -f ${i}
 done
