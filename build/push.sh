@@ -5,6 +5,8 @@
 
 source config
 
-docker rmi -f "${IMAGEREPOUSER}/${PERFSPECT_IMAGENAME}"
-docker tag "${PERFSPECT_IMAGENAME}" "${IMAGEREPOUSER}/${PERFSPECT_IMAGENAME}"
-docker push "${IMAGEREPOUSER}/${PERFSPECT_IMAGENAME}"
+for n in "${COLLECTOR_IMAGENAME}" "${AGGREGATOR_IMAGENAME}"; do
+    docker rmi -f "${IMAGEREPOUSER}/${n}"
+    docker tag "${n}" "${IMAGEREPOUSER}/${n}"
+    docker push "${IMAGEREPOUSER}/${n}"
+done

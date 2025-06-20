@@ -11,7 +11,7 @@ WORKDIR /tmp
 RUN wget -qO- https://github.com/intel/PerfSpect/releases/latest/download/perfspect.tgz | tar xvz && \
     cp perfspect/perfspect /usr/local/bin/
 
-COPY image /
+COPY image-collector /
 
 ENTRYPOINT ["/entrypoint.sh"]
 

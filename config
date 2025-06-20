@@ -4,5 +4,9 @@
 # Docker Hub username
 IMAGEREPOUSER="ptorre"
 
+# k8s namespace
+NS="perfspect"
+
 # container image name
-PERFSPECT_IMAGENAME="perfspect"
+COLLECTOR_IMAGENAME="perfspect-collector"
+AGGREGATOR_IMAGENAME="perfspect-aggregator"

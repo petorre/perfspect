@@ -5,6 +5,14 @@
 
 set -e
 
+if [[ -z "${SLEEP}" ]]; then
+    SLEEP=60
+fi
+
+if [[ -z "${NODE_NAME}" ]]; then
+    NODE_NAME=$( hostname )
+fi
+
 sockets=$( lscpu --json | jq -r '.lscpu[] | select ( .field == "Socket(s):" ) | .data ' )
 cores_per_socket=$( lscpu --json | jq -r '.lscpu[] | select ( .field == "Core(s) per socket:" ) | .data ' )
 physical_cores=$(( sockets * cores_per_socket ))
@@ -20,10 +28,21 @@ webdir="${webroot}/perfspect"
 mkdir "${webdir}"
 
 mkdir results
-perfspect report --noupdate --output results --format json,txt 1>> /dev/null 2>> /dev/null
-for f in "json" "txt"; do
-    cp results/*.${f} "${webdir}/report.${f}"
+
+while [[ 1 ]]; do
+    perfspect report --noupdate --output results --format json,txt 1>> /dev/null 2>> /dev/null
+    for f in "json" "txt"; do
+        cp results/*.${f} "${webdir}/report.${f}"
+        if [[ ! -z "${AGGREGATOR_ENDPOINT}" ]]; then
+            curl -X POST "${AGGREGATOR_ENDPOINT}" \
+                -F "filename=${NODE_NAME}.${f}" \
+                -F "content=$( base64 -w 0 ${webdir}/report.${f} )"
+        fi
+    done
+    sleep "${SLEEP}"
 done
+
+# NEVER REACHED
 
 # in Docker Engine, not in Kubelet
 if [[ "${CONF_KERNEL}" == "true" ]]; then

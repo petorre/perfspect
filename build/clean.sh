@@ -7,7 +7,9 @@ set -e
 
 source config
 
-is=$( docker image ls | awk -vPI="${PERFSPECT_IMAGENAME}" -vRUPI="${IMAGEREPOUSER}/${PERFSPECT_IMAGENAME}" ' $1==PI || $1==RUPI { print $3 } ' | sort -u )
-for i in "${is}"; do
-    docker rmi -f ${i}
+for n in "${COLLECTOR_IMAGENAME}" "${AGGREGATOR_IMAGENAME}"; do
+    is=$( docker image ls | awk -vPI="${n}" -vRUPI="${IMAGEREPOUSER}/${n}" ' $1==PI || $1==RUPI { print $3 } ' | sort -u )
+    for i in "${is}"; do
+        docker rmi -f ${i}
+    done
 done

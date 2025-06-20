@@ -7,4 +7,6 @@ set -e
 
 source config
 
-docker build -t "${PERFSPECT_IMAGENAME}" -f Dockerfile .
+for n in "${COLLECTOR_IMAGENAME}" "${AGGREGATOR_IMAGENAME}"; do
+    docker build -t "${n}" -f "Dockerfile-${n}" .
+done

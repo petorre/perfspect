@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Base64 File</title>
+</head>
+<body>
+  <h1>Base64 File Uploader</h1>
+
+  <form action="upload.php" method="post">
+    <label for="filename">Filename:</label><br>
+    <input type="text" id="filename" name="filename" required><br><br>
+
+    <label for="content">Base64 Content:</label><br>
+    <textarea id="content" name="content" rows="10" cols="60" required></textarea><br><br>
+
+    <button type="submit">Upload</button>
+  </form>
+
+  <p><strong>Note:</strong> You must manually base64-encode the file content before submitting.</p>
+</body>
+</html>
