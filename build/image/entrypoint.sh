@@ -25,14 +25,18 @@ for f in "json" "txt"; do
     cp results/*.${f} "${webdir}/report.${f}"
 done
 
-sysctl -w kernel.perf_event_paranoid=0 >> /dev/null
-sysctl -w kernel.nmi_watchdog=0 >> /dev/null
-for i in $(find /sys/devices -name perf_event_mux_interval_ms); do
-    echo 125 > $i >> /dev/null
-done
+# in Docker Engine, not in Kubelet
+if [[ "${CONF_KERNEL}" == "true" ]]; then
+    sysctl -w kernel.perf_event_paranoid=0 >> /dev/null
+    sysctl -w kernel.nmi_watchdog=0 >> /dev/null
+    for i in $(find /sys/devices -name perf_event_mux_interval_ms); do
+        echo 125 > $i >> /dev/null
+    done
+fi
+
 touch /tmp/ready
 
-while [[ true ]]; do
+while [[ "${METRICS}" == "true" ]]; do
     perfspect metrics --noupdate --noroot --duration 10 --output results 1>> /dev/null 2>> /dev/null
     sed "s/ /_/g" < results/*_metrics_summary.csv | awk -vFS="," ' NR>=2 { printf("%s %s\n",$1,$2); } ' > "${webdir}/metrics"
     clear

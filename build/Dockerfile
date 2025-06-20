@@ -2,14 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 FROM ubuntu:24.04
-#FROM alpine
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y curl jq net-tools nginx psmisc wget
-#RUN apk update && \
-#    apk upgrade && \
-#    apk add bash curl jq lscpu nginx wget
 
 WORKDIR /tmp
 RUN wget -qO- https://github.com/intel/PerfSpect/releases/latest/download/perfspect.tgz | tar xvz && \
