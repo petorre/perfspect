@@ -1,0 +1,25 @@
+# Copyright (C) 2025 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+#
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: perfspect-lb
+  namespace: perfspect
+  labels:
+    app.kubernetes.io/name: perfspect
+    app.kubernetes.io/component: backend
+spec:
+  allocateLoadBalancerNodePorts: true
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ports:
+  - name: web
+    port: 80
+    targetPort: 80
+    nodePort:
+  selector:
+    app.kubernetes.io/name: perfspect
+    app.kubernetes.io/component: backend
+  type: LoadBalancer
