@@ -15,10 +15,9 @@ cd build
 ./build.sh
 ```
 
-Set environment variable IMAGEREPOUSER to your Docker Hub username, and publish container image to Docker Hub with
+Check names in [config](./config), and publish container image to Docker Hub with
 
 ```
-export IMAGEREPOUSER=yourdockerhubusername
 ./push.sh
 ```
 
