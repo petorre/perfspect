@@ -31,10 +31,10 @@ spec:
         resources:
           requests:
             cpu: 0.1
-            memory: 100Mi
+            memory: 256Mi
           limits:
             cpu: 0.1
-            memory: 100Mi
+            memory: 512Mi
 #        env:
 #        - name: AGGREGATOR_ENDPOINT
 #          value: "http://aggregator.perfspect.svc.cluster.local/upload.php"

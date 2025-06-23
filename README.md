@@ -2,6 +2,10 @@
 
 Docker version of https://github.com/intel/PerfSpect . TODO with added Prometheus scrapping and Grafana dashboard.
 
+## Design
+
+Container in pods on worker nodes will run ```perfspect report``` and send result to the aggregator which will expose web port 8080 to provide it to curl and web clients.
+
 ## (Optional) Prepare
 
 Build with
@@ -22,7 +26,31 @@ or do similar for another container image repository.
 
 In [start.sh](./start.sh) update image name to point to where you pushed it.
 
-## Run
+## (Option 1) With Kubernetes
+
+### Run
+
+Run it with:
+
+```
+cd k8s
+kubectl apply -f 0-ns.yaml
+kubectl apply -f 1-aggregator.yaml
+kubectl apply -f 2-collectors.yaml
+```
+
+### Stop
+
+```
+cd k8s
+kubectl delete -f 0-ns.yaml
+```
+
+which will stop all pods, services and delete the namespace.
+
+## CHECK AGAIN (Option 2) With Docker Engine
+
+### Run
 
 Run it with:
 
@@ -32,41 +60,27 @@ Run it with:
 
 which will in console also present Perfspect metrics (as needed change number of rows in terminal).
 
-See Perfspect report with
+See Perfspect reports with
 
 ```
-curl http://localhost/perfspect/report.txt
+curl http://localhost:8080/list.php
+```
+
+which will give list of worker nodes, then
+
+```
+curl http://localhost:8080/worker-node-1.txt
 ```
 
 or
 
 ```
-curl http://localhost/perfspect/report.json
+curl http://localhost:8080/worker-node-2.json
 ```
-
-TODO:
-
-Get Prometheus scrapping and graph with:
-
-```
-./prometheus.sh
-```
-
-With modern browser like Edge observe usage of AVX512 on URL like http://hostFQDNorIP:9090/query?g0.expr=AVX512%3A&g0.show_tree=0&g0.tab=graph&g0.range_input=5m&g0.res_type=auto&g0.res_density=medium&g0.display_mode=lines&g0.show_exemplars=0
-
-Start Grafana with:
-
-```
-./grafana.sh
-```
-
-With the browser open URL http://hostFQDNorIP:3000 and login as "admin" with "password". In dashboards http://hostFQDNorIP:3000/dashboards select "Processwatch", press key "v" to View it, reduce time range to "Last 15 minute" and set Refresh to "5s".
-
-Now start some application workloads that are enabled to use AMX, and observe the usage like in an example view of the screens:
-
-![OpenVINO AMX AVX512 AVX2 demo](./openvino-amx.png)
 
 ## Stop
+
+### (Option 2)
 
 Stop all containers with:
 
