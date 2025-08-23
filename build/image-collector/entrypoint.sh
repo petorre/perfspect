@@ -9,8 +9,9 @@ if [[ -z "${SLEEP}" ]]; then
     SLEEP=60
 fi
 
+HOSTNAME=$( hostname )
 if [[ -z "${NODE_NAME}" ]]; then
-    NODE_NAME=$( hostname )
+    NODE_NAME="${HOSTNAME}"
 fi
 
 sockets=$( lscpu --json | jq -r '.lscpu[] | select ( .field == "Socket(s):" ) | .data ' )
@@ -32,7 +33,7 @@ mkdir results
 while [[ 1 ]]; do
     perfspect report --noupdate --output results --format json,txt 1>> /dev/null 2>> /dev/null
     for f in "json" "txt"; do
-        cp results/*.${f} "${webdir}/report.${f}"
+        sed "s/${HOSTNAME}/${NODE_NAME}/g" results/*.${f} > "${webdir}/report.${f}"
         if [[ ! -z "${AGGREGATOR_ENDPOINT}" ]]; then
             curl -X POST "${AGGREGATOR_ENDPOINT}" \
                 -F "filename=${NODE_NAME}.${f}" \
@@ -61,7 +62,7 @@ while [[ "${METRICS}" == "true" ]]; do
     clear
     echo -n "# "
     date
-    sed "s/ /_/g" < results/*_metrics_summary.csv | awk -vFS="," ' NR>=2 { if ($2>0 && $2!="NaN") printf("%s: %s\n",$1,$2); } '
+    sed "s/ /_/g" < results/*_metrics_summary.csv | awk -vFS="," ' NR>=2 { if ($2>0 && $2!="NaN") printf("%s %s\n",$1,$2); } '
     #awk -vPN="${PN}" ' NR==1 { split($0,f,","); l=length(f); } NR>=2 { split($0,a,","); if (a[3]==PN) for (i=0;i<l;i++) s[i]+=a[i]; } END { for (i=0;i<l;i++) if (s[i]>0 && f[i]!="pid") printf("%s: %s\n",f[i],s[i]); } ' pw | sort -n -k2 -r > metrics
     #awk ' { if ( $1 ~ "AES-NI" || $1 ~ "AVX" || $1 ~ "AMX" ) print "\033[44m"$0"\033[0m"; else print $0; } ' metrics
     rm -f results/*
