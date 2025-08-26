@@ -8,15 +8,15 @@ RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y curl jq net-tools psmisc wget
 
-FROM base AS v-x86_64
+FROM base AS ver-x86_64
 WORKDIR /tmp
 RUN wget -qO- https://github.com/intel/PerfSpect/releases/latest/download/perfspect.tgz | tar xvz && \
     cp perfspect/perfspect /usr/local/bin/perfspect
 
-FROM base AS v-aarch64
+FROM base AS ver-aarch64
 COPY image-collector-aarch64 /
 
-FROM v-${hosttype} AS final
+FROM ver-${hosttype} AS final
 COPY image-collector /
 ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 11434/tcp

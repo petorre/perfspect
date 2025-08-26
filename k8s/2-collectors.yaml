@@ -41,6 +41,9 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        #command: ["bash", "-c"]
+        #args:
+        #- sleep 10000;
 #        securityContext:
 #          runAsNonRoot: true
 #          runAsUser: 10001

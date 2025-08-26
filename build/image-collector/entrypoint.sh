@@ -14,22 +14,19 @@ if [[ -z "${NODE_NAME}" ]]; then
     NODE_NAME="${HOSTNAME}"
 fi
 
-cd /tmp
-
-webroot=$( awk '$1=="root" { gsub(/;/, "", $2); print $2; }' /etc/nginx/sites-enabled/default )
-webdir="${webroot}/perfspect"
-mkdir "${webdir}"
+mkdir /root/perfspect
+cd /root/perfspect
 
 mkdir results
 
 while [[ 1 ]]; do
     perfspect report --noupdate --output results --format json,txt 1>> /dev/null 2>> /dev/null
     for f in "json" "txt"; do
-        sed "s/${HOSTNAME}/${NODE_NAME}/g" results/*.${f} > "${webdir}/report.${f}"
+        sed -i "s/${HOSTNAME}/${NODE_NAME}/g" results/*.${f}
         if [[ ! -z "${AGGREGATOR_ENDPOINT}" ]]; then
             curl -X POST "${AGGREGATOR_ENDPOINT}" \
                 -F "filename=${NODE_NAME}.${f}" \
-                -F "content=$( base64 -w 0 ${webdir}/report.${f} )"
+                -F "content=$( base64 -w 0 results/*.${f} )"
         fi
     done
     sleep "${SLEEP}"
