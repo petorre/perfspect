@@ -1,9 +1,9 @@
-#! /bin/bash -v
+#! /bin/bash
 
 # Copyright (C) 2025 Intel Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-set -e
+set -ex
 
 source config
 
@@ -13,3 +13,4 @@ for n in "${COLLECTOR_IMAGENAME}" "${AGGREGATOR_IMAGENAME}"; do
         docker rmi -f ${i}
     done
 done
+

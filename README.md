@@ -1,6 +1,6 @@
-# perf
+# perfspect
 
-Docker version of https://github.com/intel/PerfSpect . TODO with added Prometheus scrapping and Grafana dashboard.
+Containerized version of https://github.com/intel/PerfSpect scheduled with Kubernetes.
 
 ## Design
 
@@ -23,11 +23,9 @@ Check names in [config](./config), and publish container image to Docker Hub wit
 
 or do similar for another container image repository.
 
-In [start.sh](./start.sh) update image name to point to where you pushed it.
+In [2-collectors.yaml](./k8s/2-collectors.yaml) update image name.
 
-## (Option 1) With Kubernetes
-
-### Run
+## Run
 
 Run it with:
 
@@ -38,7 +36,27 @@ kubectl apply -f 1-aggregator.yaml
 kubectl apply -f 2-collectors.yaml
 ```
 
-### Stop
+After short time:
+
+```
+curl http://localhost:8080/list.php
+```
+
+or similar with web browser will give you the list of available reports.
+
+Get human-readable version of the report with:
+
+```
+curl http://localhost:8080/yournodename.txt
+```
+
+or machine-readable JSON with:
+
+```
+curl http://localhost:8080/yournodename.json
+```
+
+## Stop
 
 ```
 cd k8s
@@ -47,44 +65,3 @@ kubectl delete -f 0-ns.yaml
 
 which will stop all pods, services and delete the namespace.
 
-## CHECK AGAIN (Option 2) With Docker Engine
-
-### Run
-
-Run it with:
-
-```
-./start.sh
-```
-
-which will in console also present Perfspect metrics (as needed change number of rows in terminal).
-
-See Perfspect reports with
-
-```
-curl http://localhost:8080/list.php
-```
-
-which will give list of worker nodes, then
-
-```
-curl http://localhost:8080/worker-node-1.txt
-```
-
-or
-
-```
-curl http://localhost:8080/worker-node-2.json
-```
-
-## Stop
-
-### (Option 2)
-
-Stop all containers with:
-
-```
-./stop.sh
-```
-
-which if started with scripts above will also remove those containers.
