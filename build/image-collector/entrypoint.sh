@@ -3,7 +3,7 @@
 # Copyright (C) 2025 Intel Corporation
 # SPDX-License-Identifier: Apache-2.0
 
-set -e
+set -ex
 
 if [[ -z "${SLEEP}" ]]; then
     SLEEP=60
@@ -14,15 +14,7 @@ if [[ -z "${NODE_NAME}" ]]; then
     NODE_NAME="${HOSTNAME}"
 fi
 
-sockets=$( lscpu --json | jq -r '.lscpu[] | select ( .field == "Socket(s):" ) | .data ' )
-cores_per_socket=$( lscpu --json | jq -r '.lscpu[] | select ( .field == "Core(s) per socket:" ) | .data ' )
-physical_cores=$(( sockets * cores_per_socket ))
-echo "sockets=${sockets}"
-echo "cores_per_socket=${cores_per_socket}"
-echo "physical_cores=${physical_cores}"
-
 cd /tmp
-nginx
 
 webroot=$( awk '$1=="root" { gsub(/;/, "", $2); print $2; }' /etc/nginx/sites-enabled/default )
 webdir="${webroot}/perfspect"
@@ -43,7 +35,9 @@ while [[ 1 ]]; do
     sleep "${SLEEP}"
 done
 
+#
 # NEVER REACHED
+#
 
 # in Docker Engine, not in Kubelet
 if [[ "${CONF_KERNEL}" == "true" ]]; then

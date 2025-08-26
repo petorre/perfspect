@@ -6,7 +6,7 @@ ARG hosttype
 FROM ubuntu:24.04 AS base
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y curl jq net-tools nginx psmisc wget
+    apt-get install -y curl jq net-tools psmisc wget
 
 FROM base AS v-x86_64
 WORKDIR /tmp
