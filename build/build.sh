@@ -8,5 +8,5 @@ set -e
 source config
 
 for n in "${COLLECTOR_IMAGENAME}" "${AGGREGATOR_IMAGENAME}"; do
-    docker build -t "${n}" -f "Dockerfile-${n}" .
+    docker build -t "${n}-${HOSTTYPE}" -f "Dockerfile-${n}" .
 done

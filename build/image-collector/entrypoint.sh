@@ -31,7 +31,7 @@ mkdir "${webdir}"
 mkdir results
 
 while [[ 1 ]]; do
-    perfspect report --noupdate --output results --format json,txt 1>> /dev/null 2>> /dev/null
+    "perfspect-${HOSTTYPE}" report --noupdate --output results --format json,txt 1>> /dev/null 2>> /dev/null
     for f in "json" "txt"; do
         sed "s/${HOSTNAME}/${NODE_NAME}/g" results/*.${f} > "${webdir}/report.${f}"
         if [[ ! -z "${AGGREGATOR_ENDPOINT}" ]]; then
@@ -57,7 +57,7 @@ fi
 touch /tmp/ready
 
 while [[ "${METRICS}" == "true" ]]; do
-    perfspect metrics --noupdate --noroot --duration 10 --output results 1>> /dev/null 2>> /dev/null
+    "perfspect-${HOSTTYPE}" metrics --noupdate --noroot --duration 10 --output results 1>> /dev/null 2>> /dev/null
     sed "s/ /_/g" < results/*_metrics_summary.csv | awk -vFS="," ' NR>=2 { printf("%s %s\n",$1,$2); } ' > "${webdir}/metrics"
     clear
     echo -n "# "
