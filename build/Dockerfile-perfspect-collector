@@ -9,7 +9,7 @@ RUN apt-get update -y && \
 
 WORKDIR /tmp
 RUN wget -qO- https://github.com/intel/PerfSpect/releases/latest/download/perfspect.tgz | tar xvz && \
-    cp perfspect/perfspect /usr/local/bin/persfpect-x86_64
+    cp perfspect/perfspect /usr/local/bin/perfspect-x86_64
 
 COPY image-collector /
 

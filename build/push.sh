@@ -18,7 +18,7 @@ for n in "${COLLECTOR_IMAGENAME}" "${AGGREGATOR_IMAGENAME}"; do
     imgarm="${mnfst}-aarch64"
     dsix86=$( docker search "${imgx86}" | awk -vI="${imgx86}" ' I~$1 { print $1; } ' )
     dsiarm=$( docker search "${imgarm}" | awk -vI="${imgarm}" ' I~$1 { print $1; } ' )
-    if [ "${dsix86}" != "" ] && [ "${dsiarm}" != "" ]; then
+    if [ "${dsix86}" != "" ] || [ "${dsarm}" != ""]; then
 	docker manifest rm "${mnfst}"
         docker manifest create "${mnfst}" "${imgx86}" "${imgarm}"
         docker manifest push "${mnfst}"
