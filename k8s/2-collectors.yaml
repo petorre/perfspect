@@ -44,7 +44,8 @@ spec:
         #command: ["bash", "-c"]
         #args:
         #- sleep 10000;
-#        securityContext:
+        securityContext:
+           privileged: true
 #          runAsNonRoot: true
 #          runAsUser: 10001
 #          runAsGroup: 10001
