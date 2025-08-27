@@ -53,7 +53,7 @@ curl http://localhost:8080/yournodename.txt
 or machine-readable JSON with:
 
 ```
-curl http://localhost:8080/yournodename.json
+curl -s http://localhost:8080/yournodename.json
 ```
 
 Example run:
