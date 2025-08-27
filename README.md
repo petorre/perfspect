@@ -6,7 +6,7 @@ Kubernetes-scheduled containerized version of [Intel PerfSpect](https://github.c
 
 Container in pods on worker nodes will run ```perfspect report``` and send result to the aggregator which will expose web port 8080 to provide it to curl and web clients.
 
-The collector container runs as privileged or it will not be able to collect all details like BIOS or DIMMs.
+The collector container runs as privileged or it will not be able to collect all node details like System, Baseboard, Chasis, BIOS, DIMM and NIC.
 
 ## (Optional) Prepare
 
