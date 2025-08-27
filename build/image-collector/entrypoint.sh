@@ -30,5 +30,6 @@ while [[ 1 ]]; do
             echo "Posted report to aggregator"
         fi
     done
+    echo "Sleeping ${SLEEP} seconds..."
     sleep "${SLEEP}"
 done
