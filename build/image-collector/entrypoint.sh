@@ -12,7 +12,8 @@ fi
 if [[ -z "${CATEGORIES}" ]]; then
     CATEGORIES="--all"
 else
-    CATEGORIES=$( echo "${CATEGORIES}" | sed "s/\b\w\+/--&/g" )
+    CATEGORIES=$( echo "${CATEGORIES}" | \
+        awk ' { for (i=1;i<=NF;i++) printf("--%s ",$i); } ' )
 fi
 
 HOSTNAME=$( hostname )
@@ -26,14 +27,18 @@ cd /root/perfspect
 mkdir results
 
 while [[ 1 ]]; do
-    perfspect report "${CATEGORIES}" --log-stdout --noupdate --output results --format json,txt 1>> /dev/null 2>> /dev/null
+    c="perfspect report ${CATEGORIES} --noupdate --output results\
+        --format json,txt"
+    echo "${c}"
+    ${c} 1>> /dev/null 2>> /dev/null
     for f in "json" "txt"; do
-        sed -i "s/${HOSTNAME}/${NODE_NAME}/g;s/by Intel /with Intel PerfSpect /g" results/*.${f}
+        sed -i "s/${HOSTNAME}/${NODE_NAME}/g;\
+            s/by Intel /with Intel PerfSpect /g" results/*.${f}
         if [[ ! -z "${AGGREGATOR_ENDPOINT}" ]]; then
-            curl -X POST "${AGGREGATOR_ENDPOINT}" \
+            curl -s -X POST "${AGGREGATOR_ENDPOINT}" \
                 -F "filename=${NODE_NAME}.${f}" \
                 -F "content=$( base64 -w 0 results/*.${f} )"
-            echo "Posted report to aggregator"
+            echo "Posted report results/*.${f} to aggregator"
         fi
     done
     echo "Sleeping ${SLEEP} seconds..."

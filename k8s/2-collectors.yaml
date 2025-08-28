@@ -38,8 +38,6 @@ spec:
           #value: "system-summary host bios os software cpu prefetcher isa accelerator power cstates frequency sst uncore elc memory dimm nic netconfig netirq disk filesystem gpu gaudi cxl pcie cve process sensor chassisstatus pmu sel kernellog"
         - name: AGGREGATOR_ENDPOINT
           value: "http://aggregator.perfspect.svc.cluster.local:8080/upload.php"
-        - name: METRICS
-          value: "False"
         - name: NODE_NAME
           valueFrom:
             fieldRef:
