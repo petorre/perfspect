@@ -29,6 +29,8 @@ In [2-collectors.yaml](./k8s/2-collectors.yaml) update image name.
 
 ## Run
 
+If you are familiar with ```perfspect report``` categories, you can set CATEGORIES environment variable in [2-collectors.yaml](./k8s/2-collectors.yaml#L37).
+
 Run it with:
 
 ```
