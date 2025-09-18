@@ -11,9 +11,11 @@ for r in $( curl -s "http://${elb}:8080/list.php" | grep ".json" ); do
     else
         echo ","
     fi
-    echo "  { \"node\": \"${r}\","
+    echo "  {"
+    echo "    \"node\": \"${r}\","
     ss=$( curl -s "http://${elb}:8080/${r}" | jq -r ' ."System Summary"[]."System Summary" ' )
-    echo -n "    \"system_summary\": \"${ss}\" }"
+    echo "    \"system_summary\": \"${ss}\""
+    echo -n "  }"
 done
 echo
 echo "]"
